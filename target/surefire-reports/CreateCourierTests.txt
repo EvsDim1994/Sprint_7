@@ -1,0 +1,13 @@
+-------------------------------------------------------------------------------
+Test set: CreateCourierTests
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 1.841 s <<< FAILURE! - in CreateCourierTests
+createCourierWithTheSameDate(CreateCourierTests)  Time elapsed: 0.821 s  <<< FAILURE!
+java.lang.AssertionError: 
+1 expectation failed.
+JSON path message doesn't match.
+Expected: Этот логин уже используется
+  Actual: Этот логин уже используется. Попробуйте другой.
+
+	at CreateCourierTests.createCourierWithTheSameDate(CreateCourierTests.java:36)
+

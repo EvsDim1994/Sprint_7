@@ -1,0 +1,10 @@
+model/PageInfo.class
+org/example/Main.class
+Requests.class
+model/Order.class
+Endpoints.class
+model/Courier.class
+Response/OrderResponse.class
+assertion/AssertionsCourier.class
+model/AvailableStation.class
+assertion/AssertionOrder.class

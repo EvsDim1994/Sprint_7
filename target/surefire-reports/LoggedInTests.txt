@@ -1,0 +1,11 @@
+-------------------------------------------------------------------------------
+Test set: LoggedInTests
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 66.056 s <<< FAILURE! - in LoggedInTests
+errorLoggedInTestIncorrectPassword(LoggedInTests)  Time elapsed: 60.682 s  <<< FAILURE!
+java.lang.AssertionError: 
+1 expectation failed.
+Expected status code <400> but was <504>.
+
+	at LoggedInTests.errorLoggedInTestIncorrectPassword(LoggedInTests.java:35)
+
