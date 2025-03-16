@@ -1,39 +1,53 @@
-import assertion.AssertionsCourier;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.RestAssured;
 import model.Courier;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
-public class CreateCourierTests {
-    private final Requests requests = new Requests();
-    private final AssertionsCourier assertionsCourier = new AssertionsCourier();
-    private int courierId;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
-    @Before
-    public void setUp() {
-        RestAssured.baseURI = Endpoints.BASE_URL;
-    }
-
+public class CreateCourierTests extends BaseTest {
 
     @Test
     @DisplayName("Успешное создание курьера")
     public void createCourierTest() {
         var courier = Courier.random();
-        assertionsCourier.successfullyCreate(requests.createCourier(courier));
-        courierId = assertionsCourier.successfullyLoggedIn
-                (requests.loginCourier(courier.getLogin(), courier.getPassword()));
+        boolean created = requests.createCourier(courier)
+                .then()
+                .assertThat()
+                .statusCode(201)
+                .extract()
+                .path("ok");
+        assertTrue(created);
+        courierId = requests.loginCourier(courier.getLogin(), courier.getPassword())
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .extract()
+                .path("id");
+        assertNotEquals(0, courierId);
     }
 
     @Test
     @DisplayName("Создание курьера с повторяющимеся данными")
     public void createCourierWithTheSameDate(){
         var courier = Courier.random();
-        assertionsCourier.successfullyCreate(requests.createCourier(courier));
-        courierId = assertionsCourier.successfullyLoggedIn
-                (requests.loginCourier(courier.getLogin(), courier.getPassword()));
-        assertionsCourier.errorForRepeatCourier(requests.createCourier(courier));
+        requests.createCourier(courier)
+                .then()
+                .assertThat()
+                .statusCode(201);
+        courierId = requests.loginCourier(courier.getLogin(), courier.getPassword())
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .extract()
+                .path("id");
+        assertNotEquals(0, courierId);
+        requests.createCourier(courier)
+                .then()
+                .assertThat()
+                .statusCode(409)
+                .body("message", equalTo("Этот логин уже используется"));
     }
 
     @Test
@@ -41,7 +55,11 @@ public class CreateCourierTests {
     public void createCourierWithOutLogin(){
         var courier = Courier.random();
         courier.setLogin(null);
-        assertionsCourier.unsuccessfullyCreate(requests.createCourier(courier));
+        requests.createCourier(courier)
+                .then()
+                .assertThat()
+                .statusCode(400)
+                .body("message", equalTo("Недостаточно данных для создания учетной записи"));
     }
 
     @Test
@@ -49,13 +67,10 @@ public class CreateCourierTests {
     public void createCourierWithOutPassword(){
         var courier = Courier.random();
         courier.setPassword(null);
-        assertionsCourier.unsuccessfullyCreate(requests.createCourier(courier));
-    }
-
-    @After
-    public void deleteCourier() {
-        if (courierId > 0) {
-            assertionsCourier.successfullyDelete(requests.deleteCourier(courierId));
-        }
+        requests.createCourier(courier)
+                .then()
+                .assertThat()
+                .statusCode(400)
+                .body("message", equalTo("Недостаточно данных для создания учетной записи"));
     }
 }

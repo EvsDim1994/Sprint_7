@@ -5,14 +5,11 @@ import model.Order;
 
 import static io.restassured.RestAssured.given;
 
-public class Requests {
+public class Requests extends Client {
 
     @Step("Send POST request to /api/v1/courier")
     public Response createCourier(Courier courier){
-        return given()
-                .header("Content-type", "application/json")
-                .log().all()
-                .and()
+        return spec()
                 .body(courier)
                 .when()
                 .post(Endpoints.CREATE_COURIER);
@@ -20,20 +17,13 @@ public class Requests {
 
     @Step("Send DELETE request to /api/v1/courier/:id")
     public Response deleteCourier(int courierId){
-        return given()
-                .header("Content-type", "application/json")
-                .log().all()
-                .and()
-                .when()
+        return spec()
                 .delete(Endpoints.DELETE, courierId);
     }
 
     @Step("Send POST request to /api/v1/courier/login")
     public Response loginCourier(String login, String password){
-        return given()
-                .header("Content-type", "application/json")
-                .log().all()
-                .and()
+        return spec()
                 .body(new Courier(login, password))
                 .when()
                 .post(Endpoints.AUTH);
@@ -41,10 +31,7 @@ public class Requests {
 
     @Step("Send POST request to api/v1/orders")
     public Response createOrder(Order order){
-        return given()
-                .header("Content-type", "application/json")
-                .log().all()
-                .and()
+        return spec()
                 .body(order)
                 .when()
                 .post(Endpoints.CREATE_ORDER);
@@ -52,10 +39,7 @@ public class Requests {
 
     @Step("Send GET request to api/v1/orders")
     public Response getOrders(){
-        return given()
-                .header("Content-type", "application/json")
-                .log().all()
-                .when()
+        return spec()
                 .get(Endpoints.GET_ORDER);
     }
 }

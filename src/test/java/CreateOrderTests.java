@@ -1,14 +1,14 @@
 import assertion.AssertionOrder;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.RestAssured;
 import model.Order;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import static org.junit.Assert.assertTrue;
+
 @RunWith(Parameterized.class)
-public class CreateOrderTests {
+public class CreateOrderTests extends BaseTest {
     private final String[] color;
 
     public CreateOrderTests(String[] color) {
@@ -25,18 +25,16 @@ public class CreateOrderTests {
         };
     }
 
-    private final Requests requests = new Requests();
-    private final AssertionOrder assertionsOrder = new AssertionOrder();
-
-    @Before
-    public void setUp() {
-        RestAssured.baseURI = Endpoints.BASE_URL;
-    }
-
     @Test
     @DisplayName("Успешное создание заказа")
     public void createOrderTest() {
         var order = Order.makeOrder(color);
-        assertionsOrder.successfullyCreateOrder(requests.createOrder(order));
+        int created = requests.createOrder(order)
+                .then()
+                .assertThat()
+                .statusCode(201)
+                .extract()
+                .path("track");
+        assertTrue(created > 0);
     }
 }

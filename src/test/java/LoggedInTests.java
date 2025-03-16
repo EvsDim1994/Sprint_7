@@ -1,29 +1,36 @@
-import assertion.AssertionsCourier;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.RestAssured;
 import model.Courier;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class LoggedInTests {
-    private final Requests requests = new Requests();
-    private final AssertionsCourier assertionsCourier = new AssertionsCourier();
-    private int courierId;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+
+public class LoggedInTests extends BaseTest {
     private Courier courier;
 
     @Before
     public void setUp() {
-        RestAssured.baseURI = Endpoints.BASE_URL;
         courier = Courier.random();
-        assertionsCourier.successfullyCreate(requests.createCourier(courier));
+        requests.createCourier(courier)
+                .then()
+                .assertThat()
+                .statusCode(201)
+                .extract()
+                .path("ok");
     }
 
     @Test
     @DisplayName("Успешная авторизация курьера")
     public void successLoggedInTest(){
-        courierId = assertionsCourier.successfullyLoggedIn
-                (requests.loginCourier(courier.getLogin(), courier.getPassword()));
+        courierId = requests.loginCourier(courier.getLogin(), courier.getPassword())
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .extract()
+                .path("id");
+        assertNotEquals(0, courierId);
     }
 
     @Test
@@ -31,8 +38,11 @@ public class LoggedInTests {
     public void errorLoggedInTestIncorrectPassword(){
         var courier = Courier.random();
         courier.setPassword(null);
-        assertionsCourier.unsuccessfullyLoggedIn
-                (requests.loginCourier(courier.getLogin(), courier.getPassword()));
+        requests.loginCourier(courier.getLogin(), courier.getPassword())
+                .then()
+                .assertThat()
+                .statusCode(400)
+                .body("message", equalTo("Недостаточно данных для входа"));
     }
 
     @Test
@@ -40,8 +50,11 @@ public class LoggedInTests {
     public void errorLoggedInTestIncorrectLogin(){
         var courier = Courier.random();
         courier.setLogin(null);
-        assertionsCourier.unsuccessfullyLoggedIn
-                (requests.loginCourier(courier.getLogin(), courier.getPassword()));
+        requests.loginCourier(courier.getLogin(), courier.getPassword())
+                .then()
+                .assertThat()
+                .statusCode(400)
+                .body("message", equalTo("Недостаточно данных для входа"));
     }
 
     @Test
@@ -49,8 +62,11 @@ public class LoggedInTests {
     public void errorLoggedInUnCreatedPassword(){
         var courier = Courier.random();
         courier.setPassword("1111");
-        assertionsCourier.missingDataLoggedIn
-                (requests.loginCourier(courier.getLogin(), courier.getPassword()));
+        requests.loginCourier(courier.getLogin(), courier.getPassword())
+                .then()
+                .assertThat()
+                .statusCode(404)
+                .body("message", equalTo("Учетная запись не найдена"));
     }
 
     @Test
@@ -58,15 +74,10 @@ public class LoggedInTests {
     public void errorLoggedInTestUnCreatedLogin(){
         var courier = Courier.random();
         courier.setLogin("1111");
-        assertionsCourier.missingDataLoggedIn
-                (requests.loginCourier(courier.getLogin(), courier.getPassword()));
-    }
-
-
-    @After
-    public void deleteCourier() {
-        if (courierId > 0) {
-            assertionsCourier.successfullyDelete(requests.deleteCourier(courierId));
-        }
+        requests.loginCourier(courier.getLogin(), courier.getPassword())
+                .then()
+                .assertThat()
+                .statusCode(404)
+                .body("message", equalTo("Учетная запись не найдена"));
     }
 }
