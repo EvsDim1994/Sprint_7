@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
 
 public class LoggedInTests extends BaseTest {
     private Courier courier;

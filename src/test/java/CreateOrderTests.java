@@ -1,4 +1,3 @@
-import assertion.AssertionOrder;
 import io.qameta.allure.junit4.DisplayName;
 import model.Order;
 import org.junit.Test;
