@@ -13,7 +13,7 @@ class TestLoginCourier:
                     "password": сreate_courier[1]
                 }
 
-            with allure.step("отправляем запрос на регистрацию курьера и сохраняем ответ в переменную response"): 
+            with allure.step("отправляем запрос на логин и сохраняем ответ в переменную response"): 
                 response = requests.post(Path.LOGIN, data=payload)
             with allure.step("проверка кода и тела ответа"): 
                 assert response.status_code == 200
@@ -26,7 +26,7 @@ class TestLoginCourier:
                     "login": сreate_courier[0]
                 }
             
-            with allure.step("отправляем запрос на регистрацию курьера и сохраняем ответ в переменную response"): 
+            with allure.step("отправляем запрос на логин и сохраняем ответ в переменную response"): 
                 response = requests.post(Path.LOGIN, data=payload)
             with allure.step("проверка кода и тела ответа"): 
                 assert response.status_code == 400
@@ -39,7 +39,7 @@ class TestLoginCourier:
                     "password": сreate_courier[1]
                 }
             
-            with allure.step("отправляем запрос на регистрацию курьера и сохраняем ответ в переменную response"): 
+            with allure.step("отправляем запрос на логин и сохраняем ответ в переменную response"): 
                 response = requests.post(Path.LOGIN, data=payload)
             with allure.step("проверка кода и тела ответа"): 
                 assert response.status_code == 400
@@ -53,7 +53,7 @@ class TestLoginCourier:
                     "password": "111"
                 }
 
-            with allure.step("отправляем запрос на регистрацию курьера и сохраняем ответ в переменную response"): 
+            with allure.step("отправляем запрос на логин и сохраняем ответ в переменную response"): 
                 response = requests.post(Path.LOGIN, data=payload)
             with allure.step("проверка кода и тела ответа"): 
                 assert response.status_code == 404
@@ -67,7 +67,7 @@ class TestLoginCourier:
                     "password": сreate_courier[1]
                 }
 
-            with allure.step("отправляем запрос на регистрацию курьера и сохраняем ответ в переменную response"): 
+            with allure.step("отправляем запрос на логин и сохраняем ответ в переменную response"): 
                 response = requests.post(Path.LOGIN, data=payload)
             with allure.step("проверка кода и тела ответа"): 
                 assert response.status_code == 404

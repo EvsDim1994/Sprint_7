@@ -26,8 +26,8 @@ class TestCreateOrder:
                 "comment": "Saske, come back to Konoha",
                 "color": color
             }
-        with allure.step("отправляем запрос на регистрацию курьера и сохраняем ответ в переменную response"): 
-            response = requests.post(Path.MAKE_ORDER, data=payload)
+        with allure.step("отправляем запрос на создание заказа и сохраняем ответ в переменную response"): 
+            response = requests.post(Path.ORDER, data=payload)
         with allure.step("проверка кода и тела ответа"): 
             assert response.status_code == 201
             assert response.json()["track"] > 0

@@ -85,6 +85,3 @@ class TestCreateCoirier:
             with allure.step("проверка кода и тела ответа"): 
                 assert response.status_code == 400
                 assert response.json()["message"] == "Недостаточно данных для создания учетной записи"
-
-  
-
