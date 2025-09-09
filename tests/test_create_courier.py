@@ -1,6 +1,7 @@
 from asyncio.windows_events import NULL
 import allure
 import requests
+from src.errors import Errors
 from src.helpers.reqistration_user import generate_random_string
 from src.path import Path
 
@@ -45,10 +46,10 @@ class TestCreateCoirier:
             with allure.step("проверка кода ответа"):
                 assert response.status_code == 201
             with allure.step("отправляем запрос на регистрацию курьера и сохраняем ответ в переменную response_with_the_same_data"): 
-                response_with_the_same_data = requests.post('https://qa-scooter.praktikum-services.ru/api/v1/courier', data=payload)
+                response_with_the_same_data = requests.post(Path.CREATE_COURIER, data=payload)
             with allure.step("проверка кода и тела ответа"): 
                 assert response_with_the_same_data.status_code == 409
-                assert response_with_the_same_data.json()["message"] == "Этот логин уже используется"
+                assert response_with_the_same_data.json()["message"] == Errors.CREATE_ERROR_WITH_THE_SAME_LOGIN
 
 
     def test_create_courier_without_login(self):
@@ -66,7 +67,7 @@ class TestCreateCoirier:
                 response = requests.post(Path.CREATE_COURIER, data=payload)
             with allure.step("проверка кода и тела ответа"): 
                 assert response.status_code == 400
-                assert response.json()["message"] == "Недостаточно данных для создания учетной записи"
+                assert response.json()["message"] == Errors.CREATE_ERROR
 
 
     def test_create_courier_without_password(self):
@@ -84,4 +85,4 @@ class TestCreateCoirier:
                 response = requests.post(Path.CREATE_COURIER, data=payload)
             with allure.step("проверка кода и тела ответа"): 
                 assert response.status_code == 400
-                assert response.json()["message"] == "Недостаточно данных для создания учетной записи"
+                assert response.json()["message"] == Errors.CREATE_ERROR

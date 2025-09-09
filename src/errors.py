@@ -1,0 +1,10 @@
+class Errors:
+    CREATE_ERROR = "Недостаточно данных для создания учетной записи"
+    CREATE_ERROR_WITH_THE_SAME_LOGIN = "Этот логин уже используется"
+    LOGIN_ERROR = "Учетная запись не найдена"
+    LOGIN_ERROR_WITHOUT_FILEDS = "Недостаточно данных для создания учетной записи"
+    DELETE_ERROR = "Недостаточно данных для удаления курьера"
+    DELETE_ERROR_WITH_INCORRECT_ID = "Курьера с таким id нет"
+    ACCEPT_ORDER_WITHOUT_IDS = "Недостаточно данных для поиска"
+    ACCEPT_ORDER_WITH_INCORRECT_ID_ORDER = "Заказа с таким id не существует"
+    ACCEPT_ORDER_WITH_INCORRECT_ID_COURIER = "Курьера с таким id не существует"

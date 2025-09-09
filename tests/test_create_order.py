@@ -13,7 +13,7 @@ class TestCreateOrder:
             [],                 # пустой список цветов
             ["BLACK"]           # список с одним цветом
         ])    
-    def test_successfull_login_courier(self, color):
+    def test_successfull_create_order(self, color):
         with allure.step("формирование тела запроса"): 
             payload = {
                 "firstName": "Naruto",
