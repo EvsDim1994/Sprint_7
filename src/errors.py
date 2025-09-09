@@ -8,3 +8,4 @@ class Errors:
     ACCEPT_ORDER_WITHOUT_IDS = "Недостаточно данных для поиска"
     ACCEPT_ORDER_WITH_INCORRECT_ID_ORDER = "Заказа с таким id не существует"
     ACCEPT_ORDER_WITH_INCORRECT_ID_COURIER = "Курьера с таким id не существует"
+    

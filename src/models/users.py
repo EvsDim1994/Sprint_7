@@ -3,3 +3,4 @@ class Courier:
         self.login = login
         self.password = password
         self.user_id = 0
+        

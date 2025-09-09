@@ -101,3 +101,4 @@ class TestAcceptOrder:
         with allure.step("проверка кода и тела ответа"): 
             assert response_accept_order.status_code == 404
             assert response_accept_order.json()["message"] == Errors.ACCEPT_ORDER_WITH_INCORRECT_ID_ORDER
+            

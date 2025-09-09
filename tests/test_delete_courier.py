@@ -38,4 +38,3 @@ class TestDeleteCourier:
             with allure.step("проверка кода и тела ответа"): 
                 assert response.status_code == 404 
                 assert response.json()["message"] == Errors.DELETE_ERROR_WITH_INCORRECT_ID
-

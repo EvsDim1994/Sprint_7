@@ -12,3 +12,4 @@ def delete_registrationed_user(user_id):
         response = requests.delete(Path.CREATE_COURIER + f"/{user_id}")
     with allure.step("проверка кода ответа"):
         assert response.status_code == 200
+        
